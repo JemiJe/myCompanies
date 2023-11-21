@@ -17,8 +17,4 @@ export class ValidateInputPipe extends ValidationPipe {
       }
     }
   }
-
-  // private handleError(errors) {
-  //   if (errors) return errors.map((error) => error.constraints);
-  // }
 }
