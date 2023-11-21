@@ -11,16 +11,19 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../auth/roles/roles.guard';
 import { CompaniesService } from './companies.service';
 import { Company as CompanyEntity } from './company.entity';
 import { CompanyDto } from './dto/company.dto';
+import { Roles } from '../auth/roles/roles.decorator';
+import { RolesEnum } from 'src/core/enums/roles.enum';
 
 @Controller('companies')
 export class CompaniesController {
   constructor(private readonly companyService: CompaniesService) {}
 
-  // TODO: add restriction only admin can get all posts
-  @UseGuards(AuthGuard('jwt'))
+  @Roles(RolesEnum.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('all')
   async findAll() {
     return await this.companyService.findAll();

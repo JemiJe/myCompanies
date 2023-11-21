@@ -1,5 +1,5 @@
 import { IsNotEmpty, MinLength, MaxLength, IsEmail } from 'class-validator';
-import { Roles } from 'src/core/enums/enums';
+import { RolesEnum as Roles } from 'src/core/enums/enums';
 import {
   USER_PASSWORD_MIN_LENGTH,
   USER_CREDENTIALS_MAX_LENGTH,

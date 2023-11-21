@@ -1,4 +1,4 @@
-export const Roles = {
+export const RolesEnum = {
   ADMIN: 'admin',
   USER: 'user',
 };
