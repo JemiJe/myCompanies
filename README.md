@@ -10,3 +10,11 @@ cd backend
 npm i
 npm start
 ```
+
+## setting up backend
+
+```
+cd frontend
+npm i
+npm run dev
+```

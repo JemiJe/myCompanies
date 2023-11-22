@@ -3,7 +3,8 @@
 # BACKEND
 # compiled output
 backend/dist
-backend/node_modules
+backend/build
+node_modules
 
 # Logs
 logs
@@ -18,7 +19,7 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-backend/coverage
+coverage
 backend/.nyc_output
 
 # IDEs and editors
@@ -36,3 +37,9 @@ backend/.idea
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Production
+build
+
+# Miscellaneous
+*.local
