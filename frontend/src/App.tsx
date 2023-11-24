@@ -15,7 +15,6 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <ToastContainer />
         <Header />
         <Routes>
           <Route
@@ -33,6 +32,7 @@ function App() {
           <Route path={RoutePaths.root + "*"} element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer theme="colored" />
     </div>
   )
 }
