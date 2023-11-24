@@ -8,7 +8,7 @@ import {
   ProfilePage,
   NotFoundPage,
 } from "./pages/pages"
-import { Header } from "./components/common/common"
+import { Header } from "./components/components"
 import { ToastContainer } from "react-toastify"
 
 function App() {

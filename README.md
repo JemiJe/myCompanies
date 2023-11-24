@@ -1,7 +1,12 @@
+<div align="center">
+  <img src="logo.png" width="150" alt="myCompanies Logo" />
+  <h2 align="center" style="margin-top: -3px">Manage your companies</h2>
+</div>
+
 ## setting up backend
 
 - create your postgreSQL DB
-- copy .env.example and rename it to .env
+- copy .env.example and rename it to .env (/backend folder)
 - fill .env with your posgressSQL values
 - then:
 
@@ -24,3 +29,11 @@ cd frontend
 npm i
 npm run dev
 ```
+
+## features
+
+## stack
+
+### server
+
+### client
