@@ -8,6 +8,13 @@
 }
 
 .logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 210px;
+}
+
+.logoImg {
   color: var(--global-white);
   font-size: 1.5em;
 }
