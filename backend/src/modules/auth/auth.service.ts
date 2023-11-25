@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -36,11 +36,20 @@ export class AuthService {
   public async create(user: UserDto) {
     const passwordHash = await this.hashPassword(user.password);
 
-    const newUser = await this.userService.create({
-      ...user,
-      role: RolesEnum.USER,
-      password: passwordHash,
-    });
+    let newUser;
+
+    try {
+      newUser = await this.userService.create({
+        ...user,
+        role: RolesEnum.USER,
+        password: passwordHash,
+      });
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError')
+        throw new ConflictException(
+          'User credentials must be unique (nickname, email)',
+        );
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = newUser['dataValues'];

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { authApi } from "../services/authApi"
 import { setupListeners } from "@reduxjs/toolkit/query/react"
+import { errorHandler } from "../middlewares/middlewares"
 import authReducer from "../features/authSlice"
 
 export const store = configureStore({
@@ -8,8 +9,10 @@ export const store = configureStore({
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+  middleware: (getDefaultMiddleware) => [
+    errorHandler,
+    ...getDefaultMiddleware().concat(authApi.middleware),
+  ],
 })
 
 export type AppDispatch = typeof store.dispatch
