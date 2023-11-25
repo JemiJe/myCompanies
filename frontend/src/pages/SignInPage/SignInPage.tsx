@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
-import { LoadingScreen } from "../../components/common/common"
+import { LoadingScreen } from "../../components/components"
 import { Link } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import { useLoginUserMutation } from "../../services/authApi"
@@ -18,7 +18,6 @@ import { UserSignInReqDto } from "../../dto/userSignInReqDto"
 import style from "./style.module.css"
 import { useAppDispatch } from "../../app/hooks"
 import { setUser } from "../../features/authSlice"
-import { ServerErrorDto } from "../../dto/serverErrorDto"
 
 const initialState: UserSignInReqDto = {
   email: "",
@@ -51,13 +50,10 @@ export const SignInPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("You have successfully logged in")
       dispatch(setUser(data))
       navigate(RoutePaths.companies)
-    } else if (isError) {
-      // toast.error(error.data.message)
     }
-  }, [isSuccess, isError])
+  }, [isSuccess])
 
   return (
     <Container component="main" maxWidth="xs">

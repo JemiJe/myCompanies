@@ -10,8 +10,18 @@ import {
 } from "./pages/pages"
 import { Header } from "./components/components"
 import { ToastContainer } from "react-toastify"
+import { useAppDispatch } from "./app/hooks"
+import { getUserFromLocalStorage } from "./helpers/getUserFromLocalStorage"
+import { useEffect } from "react"
+import { setUser } from "./features/authSlice"
 
 function App() {
+  const dispatch = useAppDispatch()
+  const user = getUserFromLocalStorage()
+
+  useEffect(() => {
+    dispatch(setUser(user))
+  }, [])
   return (
     <div>
       <BrowserRouter>

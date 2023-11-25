@@ -1,15 +1,34 @@
-import * as React from "react"
+import React from "react"
 import Button from "@mui/material/Button"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import Avatar from "@mui/material/Avatar"
-import style from "./style.module.css"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { logout } from "../../features/authSlice"
+import { RoutePaths } from "../../enums/RoutePaths"
+import { selectAuth } from "../../features/authSlice"
 
 export const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { user } = useAppSelector(selectAuth)
+
+  const handleLogout = () => {
+    handleClose()
+    dispatch(logout())
+    navigate(RoutePaths.signIn)
+  }
+
+  const handleProfilePath = () => {
+    handleClose()
+    navigate(RoutePaths.profile)
+  }
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+    if (user !== null) setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
@@ -26,6 +45,7 @@ export const ProfileMenu = () => {
       >
         <Avatar></Avatar>
       </Button>
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -35,8 +55,8 @@ export const ProfileMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleProfilePath}>Profile</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   )
