@@ -15,7 +15,7 @@ export const authSlice = createSlice({
     setUser: (state, action: PayloadAction<UserAuthRespDto>) => {
       localStorage.setItem(
         LOCAL_STORAGE_USER_DATA_KEY,
-        action.payload.token as string,
+        JSON.stringify(action.payload),
       )
       state.user = action.payload.user
       state.token = action.payload.token

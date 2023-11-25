@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
+import { LoadingScreen } from "../../components/common/common"
 import { Link } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import { useLoginUserMutation } from "../../services/authApi"
@@ -17,6 +18,7 @@ import { UserSignInReqDto } from "../../dto/userSignInReqDto"
 import style from "./style.module.css"
 import { useAppDispatch } from "../../app/hooks"
 import { setUser } from "../../features/authSlice"
+import { ServerErrorDto } from "../../dto/serverErrorDto"
 
 const initialState: UserSignInReqDto = {
   email: "",
@@ -29,6 +31,8 @@ export const SignInPage = () => {
     useLoginUserMutation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const loadingScreen = useMemo(() => isLoading, [isLoading])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue({
@@ -49,13 +53,15 @@ export const SignInPage = () => {
     if (isSuccess) {
       toast.success("You have successfully logged in")
       dispatch(setUser(data))
-      console.dir(data)
       navigate(RoutePaths.companies)
+    } else if (isError) {
+      // toast.error(error.data.message)
     }
-  }, [isSuccess])
+  }, [isSuccess, isError])
 
   return (
     <Container component="main" maxWidth="xs">
+      <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Box
         sx={{
@@ -71,6 +77,7 @@ export const SignInPage = () => {
           src="/signin.png"
           variant="square"
         />
+
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
