@@ -12,7 +12,7 @@ import { LoadingScreen } from "../../components/components"
 import { Link } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import { useSignUpUserMutation } from "../../services/authApi"
-import { hasEmptyKeyValue } from "../../helpers/hasEmptyKeyValue"
+import { hasEmptyKeyValue, isValidEmail } from "../../helpers/helpers"
 import { toast } from "react-toastify"
 import { UserSignUpReqDto } from "../../dto/dto"
 import { useAppDispatch } from "../../app/hooks"
@@ -49,6 +49,8 @@ export const SignUpPage = () => {
   const handleSignUp = () => {
     if (hasEmptyKeyValue(formValue)) {
       toast.error(ErrorMessages.emptyAuthFields)
+    } else if (!isValidEmail(formValue.email)) {
+      toast.error(ErrorMessages.invalidEmail)
     } else {
       signUpUser({ ...formValue })
     }
