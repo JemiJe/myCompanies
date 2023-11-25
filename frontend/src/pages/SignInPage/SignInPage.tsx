@@ -14,10 +14,11 @@ import { RoutePaths } from "../../enums/RoutePaths"
 import { useLoginUserMutation } from "../../services/authApi"
 import { hasEmptyKeyValue } from "../../helpers/hasEmptyKeyValue"
 import { toast } from "react-toastify"
-import { UserSignInReqDto } from "../../dto/userSignInReqDto"
-import style from "./style.module.css"
+import { UserSignInReqDto } from "../../dto/dto"
 import { useAppDispatch } from "../../app/hooks"
 import { setUser } from "../../features/authSlice"
+import { ErrorMessages } from "../../enums/enums"
+import style from "./style.module.css"
 
 const initialState: UserSignInReqDto = {
   email: "",
@@ -42,7 +43,7 @@ export const SignInPage = () => {
 
   const handleSignIn = () => {
     if (hasEmptyKeyValue(formValue)) {
-      toast.error("Please fill all fields")
+      toast.error(ErrorMessages.emptyAuthFields)
     } else {
       loginUser({ ...formValue })
     }

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -7,11 +8,19 @@ import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
+import { LoadingScreen } from "../../components/components"
 import { Link } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
+import { useSignUpUserMutation } from "../../services/authApi"
+import { hasEmptyKeyValue } from "../../helpers/hasEmptyKeyValue"
+import { toast } from "react-toastify"
+import { UserSignUpReqDto } from "../../dto/dto"
+import { useAppDispatch } from "../../app/hooks"
+import { setUser } from "../../features/authSlice"
+import { ErrorMessages } from "../../enums/enums"
 import style from "./style.module.css"
 
-const initialState = {
+const initialState: UserSignUpReqDto = {
   first_name: "",
   last_name: "",
   nick_name: "",
@@ -23,6 +32,12 @@ const initialState = {
 
 export const SignUpPage = () => {
   const [formValue, setFormValue] = useState(initialState)
+  const [signUpUser, { data, isSuccess, isLoading, isError, error }] =
+    useSignUpUserMutation()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const loadingScreen = useMemo(() => isLoading, [isLoading])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue({
@@ -31,8 +46,24 @@ export const SignUpPage = () => {
     })
   }
 
+  const handleSignUp = () => {
+    if (hasEmptyKeyValue(formValue)) {
+      toast.error(ErrorMessages.emptyAuthFields)
+    } else {
+      signUpUser({ ...formValue })
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setUser(data))
+      navigate(RoutePaths.companies)
+    }
+  }, [isSuccess])
+
   return (
     <Container component="main" maxWidth="xs">
+      <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Box
         sx={{
@@ -146,6 +177,7 @@ export const SignUpPage = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSignUp}
           >
             Sign Up
           </Button>

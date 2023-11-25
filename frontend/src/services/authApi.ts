@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { ApiEndpoints } from "../enums/enums"
+import { UserSignInReqDto, UserSignUpReqDto } from "../dto/dto"
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -8,9 +9,18 @@ export const authApi = createApi({
   }),
   endpoints: (builder) => ({
     loginUser: builder.mutation({
-      query: (body: { email: string; password: string }) => {
+      query: (body: UserSignInReqDto) => {
         return {
           url: ApiEndpoints.login,
+          method: "post",
+          body,
+        }
+      },
+    }),
+    signUpUser: builder.mutation({
+      query: (body: UserSignUpReqDto) => {
+        return {
+          url: ApiEndpoints.signUp,
           method: "post",
           body,
         }
@@ -19,4 +29,4 @@ export const authApi = createApi({
   }),
 })
 
-export const { useLoginUserMutation } = authApi
+export const { useLoginUserMutation, useSignUpUserMutation } = authApi
