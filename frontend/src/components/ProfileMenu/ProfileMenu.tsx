@@ -30,7 +30,7 @@ export const ProfileMenu = () => {
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (user !== null) setAnchorEl(event.currentTarget)
+    setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
@@ -52,11 +52,6 @@ export const ProfileMenu = () => {
             color="primary"
             overlap="circular"
             classes={style}
-            // sx={{
-            //   "& .MuiBadge-badge": {
-            //     fontSize: "0.7em",
-            //   },
-            // }}
           >
             <Avatar></Avatar>
           </Badge>
