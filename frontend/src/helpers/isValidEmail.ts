@@ -1,4 +1,4 @@
-export const isValidEmail = (email: string) => {
+export const isValidEmail = (email: string | null | undefined) => {
   return String(email)
     .toLowerCase()
     .match(

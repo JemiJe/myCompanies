@@ -48,7 +48,10 @@ function App() {
             />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path={RoutePaths.profile} element={<ProfilePage />} />
+            <Route
+              path={RoutePaths.profile}
+              element={<ProfilePage userProp={user.user} />}
+            />
           </Route>
 
           {/* Admin protected */}

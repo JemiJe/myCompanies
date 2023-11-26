@@ -19,15 +19,22 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.findAll<User>();
+    return await this.userRepository.findAll<User>({
+      attributes: { exclude: ['password'] },
+    });
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne<User>({ where: { email } });
+    return await this.userRepository.findOne<User>({
+      where: { email },
+    });
   }
 
   async findOneById(id: number): Promise<User> {
-    return await this.userRepository.findOne<User>({ where: { id } });
+    return await this.userRepository.findOne<User>({
+      where: { id },
+      attributes: { exclude: ['password'] },
+    });
   }
 
   async delete(userId) {
@@ -46,16 +53,14 @@ export class UsersService {
     }
 
     try {
-      const [numberOfAffectedRows, [updatedUser]] =
-        await this.userRepository.update(
-          { ...newUser },
-          {
-            where: { id: userId },
-            returning: true,
-          },
-        );
+      const [numberOfAffectedRows] = await this.userRepository.update(
+        { ...newUser },
+        {
+          where: { id: userId },
+        },
+      );
 
-      return { numberOfAffectedRows, updatedUser };
+      return { numberOfAffectedRows };
     } catch (error) {
       throw new InternalServerErrorException(error.name);
     }

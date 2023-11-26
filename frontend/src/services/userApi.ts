@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { ApiEndpoints } from "../enums/enums"
-import { UserSignInReqDto, UserSignUpReqDto } from "../dto/dto"
+import { getUserAuthHeader } from "../helpers/helpers"
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -8,20 +8,39 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_SERVER_API_BASE_URL,
   }),
   endpoints: (builder) => ({
-    loginUser: builder.mutation({
-      query: (body: UserSignInReqDto) => {
+    getAllUsers: builder.mutation({
+      query: () => {
         return {
-          url: ApiEndpoints.login,
-          method: "post",
-          body,
+          url: ApiEndpoints.usersAll,
+          headers: { ...getUserAuthHeader() },
+          method: "get",
         }
       },
     }),
-    signUpUser: builder.mutation({
-      query: (body: UserSignUpReqDto) => {
+    getUserById: builder.mutation({
+      query: (id) => {
         return {
-          url: ApiEndpoints.signUp,
-          method: "post",
+          url: ApiEndpoints.users + `/${id}`,
+          headers: { ...getUserAuthHeader() },
+          method: "get",
+        }
+      },
+    }),
+    deleteUserById: builder.mutation({
+      query: (id) => {
+        return {
+          url: ApiEndpoints.users + `/${id}`,
+          headers: { ...getUserAuthHeader() },
+          method: "delete",
+        }
+      },
+    }),
+    updateUserById: builder.mutation({
+      query: ({ id, body }) => {
+        return {
+          url: ApiEndpoints.users + `/${id}`,
+          headers: { ...getUserAuthHeader() },
+          method: "put",
           body,
         }
       },
@@ -29,4 +48,9 @@ export const userApi = createApi({
   }),
 })
 
-export const { useLoginUserMutation, useSignUpUserMutation } = userApi
+export const {
+  useGetAllUsersMutation,
+  useGetUserByIdMutation,
+  useDeleteUserByIdMutation,
+  useUpdateUserByIdMutation,
+} = userApi

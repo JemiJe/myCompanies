@@ -20,7 +20,7 @@ import { toast } from "react-toastify"
 import { UserSignInReqDto } from "../../dto/dto"
 import { useAppDispatch } from "../../app/hooks"
 import { setUser } from "../../features/authSlice"
-import { ErrorMessages } from "../../enums/enums"
+import { Messages } from "../../enums/enums"
 import style from "./style.module.css"
 
 const initialState: UserSignInReqDto = {
@@ -46,7 +46,7 @@ export const SignInPage = () => {
 
   const handleSignIn = () => {
     if (hasEmptyKeyValue(formValue)) {
-      toast.error(ErrorMessages.emptyAuthFields)
+      toast.error(Messages.emptyAuthFields)
     } else {
       loginUser({ ...formValue })
     }

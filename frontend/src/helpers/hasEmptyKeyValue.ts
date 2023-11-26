@@ -1,4 +1,8 @@
-export const hasEmptyKeyValue = (data: { [key: string]: string }) => {
+type Data = {
+  [key: string]: string | number | null | undefined
+}
+
+export const hasEmptyKeyValue = (data: Data) => {
   let isEmpty = false
   for (const value of Object.values(data)) {
     if (value === "") isEmpty = true

@@ -60,12 +60,13 @@ export class UsersController {
       throw new UnauthorizedException('You are not authorized edit this user');
     }
 
-    const { numberOfAffectedRows, updatedUser } =
-      await this.usersService.update(user, id);
+    const { numberOfAffectedRows } = await this.usersService.update(user, id);
 
     if (numberOfAffectedRows === 0) {
       throw new NotFoundException("This user doesn't exist");
     }
+
+    const updatedUser = await this.usersService.findOneById(id);
 
     return updatedUser;
   }

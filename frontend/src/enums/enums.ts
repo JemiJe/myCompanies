@@ -1,4 +1,4 @@
 export { ApiEndpoints } from "./ApiEndpoints"
 export { RoutePaths } from "./RoutePaths"
-export { ErrorMessages } from "./ErrorMessages"
+export { Messages } from "./Messages"
 export { Roles } from "./Roles"
