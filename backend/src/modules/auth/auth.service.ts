@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -45,10 +45,7 @@ export class AuthService {
         password: passwordHash,
       });
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError')
-        throw new ConflictException(
-          'User credentials must be unique (nickname, email)',
-        );
+      throw new InternalServerErrorException(error.name);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

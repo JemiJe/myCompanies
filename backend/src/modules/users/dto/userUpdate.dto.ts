@@ -1,18 +1,17 @@
-import { IsNotEmpty, MinLength, IsEmail } from 'class-validator';
-import { RolesEnum as Roles } from 'src/core/enums/enums';
+import { MinLength, IsEmail, IsOptional } from 'class-validator';
 import { USER_PASSWORD_MIN_LENGTH } from 'src/core/constants';
 
-export class UserDto {
-  @IsNotEmpty()
+export class UserUpdateDto {
+  @IsOptional()
   readonly first_name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   readonly last_name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   readonly nick_name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail(
     {},
     {
@@ -21,17 +20,15 @@ export class UserDto {
   )
   readonly email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(USER_PASSWORD_MIN_LENGTH, {
     message: `min length of password is ${USER_PASSWORD_MIN_LENGTH}`,
   })
   readonly password: string;
 
-  readonly role: (typeof Roles)[keyof typeof Roles];
-
-  @IsNotEmpty()
+  @IsOptional()
   readonly position: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   readonly description: string;
 }

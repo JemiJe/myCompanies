@@ -3,4 +3,6 @@ export enum ApiEndpoints {
   signUp = "auth/signup",
   companies = "companies",
   companiesAll = "companies/all",
+  user = "user",
+  userAll = "user/all",
 }
