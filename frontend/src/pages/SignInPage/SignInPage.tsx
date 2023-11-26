@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Navigate } from "react-router-dom"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -12,7 +12,10 @@ import { LoadingScreen } from "../../components/components"
 import { Link } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import { useLoginUserMutation } from "../../services/authApi"
-import { hasEmptyKeyValue } from "../../helpers/helpers"
+import {
+  getUserFromLocalStorage,
+  hasEmptyKeyValue,
+} from "../../helpers/helpers"
 import { toast } from "react-toastify"
 import { UserSignInReqDto } from "../../dto/dto"
 import { useAppDispatch } from "../../app/hooks"
@@ -26,9 +29,9 @@ const initialState: UserSignInReqDto = {
 }
 
 export const SignInPage = () => {
+  const { user } = getUserFromLocalStorage()
   const [formValue, setFormValue] = useState(initialState)
-  const [loginUser, { data, isSuccess, isLoading, isError, error }] =
-    useLoginUserMutation()
+  const [loginUser, { data, isSuccess, isLoading }] = useLoginUserMutation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -55,6 +58,10 @@ export const SignInPage = () => {
       navigate(RoutePaths.companies)
     }
   }, [isSuccess])
+
+  if (user !== null) {
+    return <Navigate to={RoutePaths.companies} />
+  }
 
   return (
     <Container component="main" maxWidth="xs">

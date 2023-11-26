@@ -9,10 +9,14 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { LoadingScreen } from "../../components/components"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import { useSignUpUserMutation } from "../../services/authApi"
-import { hasEmptyKeyValue, isValidEmail } from "../../helpers/helpers"
+import {
+  hasEmptyKeyValue,
+  isValidEmail,
+  getUserFromLocalStorage,
+} from "../../helpers/helpers"
 import { toast } from "react-toastify"
 import { UserSignUpReqDto } from "../../dto/dto"
 import { useAppDispatch } from "../../app/hooks"
@@ -31,9 +35,9 @@ const initialState: UserSignUpReqDto = {
 }
 
 export const SignUpPage = () => {
+  const { user } = getUserFromLocalStorage()
   const [formValue, setFormValue] = useState(initialState)
-  const [signUpUser, { data, isSuccess, isLoading, isError, error }] =
-    useSignUpUserMutation()
+  const [signUpUser, { data, isSuccess, isLoading }] = useSignUpUserMutation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -62,6 +66,10 @@ export const SignUpPage = () => {
       navigate(RoutePaths.companies)
     }
   }, [isSuccess])
+
+  if (user !== null) {
+    return <Navigate to={RoutePaths.companies} />
+  }
 
   return (
     <Container component="main" maxWidth="xs">
