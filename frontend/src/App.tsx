@@ -7,8 +7,10 @@ import {
   CompanyDetailPage,
   ProfilePage,
   NotFoundPage,
+  UserListPage,
+  CompanyListPage,
 } from "./pages/pages"
-import { Header } from "./components/components"
+import { Header, ProtectedRoute } from "./components/components"
 import { ToastContainer } from "react-toastify"
 import { useAppDispatch } from "./app/hooks"
 import { getUserFromLocalStorage } from "./helpers/getUserFromLocalStorage"
@@ -27,18 +29,40 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          {/* Public */}
           <Route
             path={RoutePaths.root}
             element={<Navigate to={RoutePaths.signIn} replace />}
           />
           <Route path={RoutePaths.signIn} element={<SignInPage />} />
           <Route path={RoutePaths.signUp} element={<SignUpPage />} />
-          <Route path={RoutePaths.companies} element={<CompaniesPage />} />
-          <Route
-            path={RoutePaths.companyDetail}
-            element={<CompanyDetailPage />}
-          />
-          <Route path={RoutePaths.profile} element={<ProfilePage />} />
+
+          {/* User protected */}
+          <Route element={<ProtectedRoute />}>
+            <Route path={RoutePaths.companies} element={<CompaniesPage />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path={RoutePaths.companyDetail}
+              element={<CompanyDetailPage />}
+            />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path={RoutePaths.profile} element={<ProfilePage />} />
+          </Route>
+
+          {/* Admin protected */}
+          <Route element={<ProtectedRoute isAdminProtected={true} />}>
+            <Route path={RoutePaths.userList} element={<UserListPage />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdminProtected={true} />}>
+            <Route
+              path={RoutePaths.companyList}
+              element={<CompanyListPage />}
+            />
+          </Route>
+
+          {/* Other */}
           <Route path={RoutePaths.root + "*"} element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

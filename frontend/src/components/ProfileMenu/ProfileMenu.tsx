@@ -3,11 +3,13 @@ import Button from "@mui/material/Button"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import Avatar from "@mui/material/Avatar"
+import Badge from "@mui/material/Badge"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { logout } from "../../features/authSlice"
-import { RoutePaths } from "../../enums/RoutePaths"
+import { RoutePaths, Roles } from "../../enums/enums"
 import { selectAuth } from "../../features/authSlice"
+import style from "./style.module.css"
 
 export const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -43,7 +45,24 @@ export const ProfileMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Avatar></Avatar>
+        {user?.role === Roles.ADMIN ? (
+          <Badge
+            badgeContent={Roles.ADMIN}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            color="primary"
+            overlap="circular"
+            classes={style}
+            // sx={{
+            //   "& .MuiBadge-badge": {
+            //     fontSize: "0.7em",
+            //   },
+            // }}
+          >
+            <Avatar></Avatar>
+          </Badge>
+        ) : (
+          <Avatar></Avatar>
+        )}
       </Button>
 
       <Menu

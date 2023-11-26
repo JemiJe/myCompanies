@@ -3,6 +3,8 @@ export enum RoutePaths {
   signUp = "/sign_up",
   signIn = "/sign_in",
   companies = "/companies",
-  companyDetail = "company_detail",
-  profile = "profile",
+  companyDetail = "/company-detail",
+  profile = "/profile",
+  userList = "/user-list",
+  companyList = "/company-list",
 }
