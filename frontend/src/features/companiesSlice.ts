@@ -19,5 +19,5 @@ export const companiesSlice = createSlice({
 })
 
 export const selectCompanies = (state: RootState) => state.companies
-export const { setCompanies } = companiesSlice.actions
+export const { setCompanies, clearCompanies } = companiesSlice.actions
 export default companiesSlice.reducer

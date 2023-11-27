@@ -7,6 +7,7 @@ import Badge from "@mui/material/Badge"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { logout } from "../../features/authSlice"
+import { clearCompanies } from "../../features/companiesSlice"
 import { RoutePaths, Roles } from "../../enums/enums"
 import { selectAuth } from "../../features/authSlice"
 import style from "./style.module.css"
@@ -21,6 +22,7 @@ export const ProfileMenu = () => {
   const handleLogout = () => {
     handleClose()
     dispatch(logout())
+    dispatch(clearCompanies())
     navigate(RoutePaths.signIn)
   }
 

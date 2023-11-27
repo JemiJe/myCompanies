@@ -1,9 +1,9 @@
 import { CompanyByIdRespDto } from "../../dto/dto"
 
-type CompaniesStoreObject = {
+type CompaniesInitialType = {
   companies: CompanyByIdRespDto[] | null
 }
 
-export const companiesSliceInitialState: CompaniesStoreObject = {
+export const companiesSliceInitialState: CompaniesInitialType = {
   companies: null,
 }
