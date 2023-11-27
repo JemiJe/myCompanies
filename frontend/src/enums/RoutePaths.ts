@@ -5,6 +5,7 @@ export enum RoutePaths {
   companies = "/companies",
   companyDetail = "/company-detail",
   profile = "/profile",
+  // only for admins
   userList = "/user-list",
   companyList = "/company-list",
 }
