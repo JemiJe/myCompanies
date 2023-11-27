@@ -22,20 +22,14 @@ import { toast } from "react-toastify"
 import { useAppDispatch } from "../../app/hooks"
 import { setUser } from "../../features/authSlice"
 import { Messages } from "../../enums/enums"
-import { UserAuthRespDto, UserRespDto } from "../../dto/dto"
-import { useAppSelector } from "../../app/hooks"
-import { selectAuth } from "../../features/authSlice"
 import style from "./style.module.css"
 
-type Properties = {
-  userProp?: UserRespDto | null
-}
-
-export const ProfilePage: React.FC<Properties> = ({ userProp }) => {
+export const ProfilePage = () => {
   let { user, token } = getUserFromLocalStorage()
   const initialFormValue = { ...user, password: "" }
 
   const [formValue, setFormValue] = useState(initialFormValue)
+  const [changedValues, setChangedValues] = useState({})
   const [updateUserById, { data, isSuccess, isLoading }] =
     useUpdateUserByIdMutation()
   const navigate = useNavigate()
@@ -50,19 +44,25 @@ export const ProfilePage: React.FC<Properties> = ({ userProp }) => {
     })
   }
 
-  const handleProfileUpdate = () => {
+  useEffect(() => {
     const changedFields = getOnlyChangedFields(
       initialFormValue,
       removeEmptyKeyValues(formValue),
     )
+
+    changedFields === null
+      ? setChangedValues({})
+      : setChangedValues(changedFields)
+  }, [formValue])
+
+  const handleProfileUpdate = () => {
     if (!isValidEmail(formValue.email)) {
       toast.error(Messages.invalidEmail)
-    } else if (user && changedFields !== null) {
-      if (changedFields)
-        updateUserById({
-          id: user?.id,
-          body: { ...changedFields },
-        })
+    } else if (user && Object.keys(changedValues).length > 0) {
+      updateUserById({
+        id: user?.id,
+        body: { ...changedValues },
+      })
     }
   }
 
@@ -200,6 +200,7 @@ export const ProfilePage: React.FC<Properties> = ({ userProp }) => {
                 fullWidth
                 variant="contained"
                 onClick={handleProfileUpdate}
+                disabled={Object.keys(changedValues).length < 1}
               >
                 Save
               </Button>
