@@ -8,11 +8,11 @@ import { LoadingScreen } from "../../components/components"
 import Container from "@mui/material/Container"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
-import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import { DataTable } from "../../components/common/common"
 import { prepareTableData } from "../../helpers/helpers"
+import { RoutePaths } from "../../enums/enums"
 
 export const CompaniesPage = () => {
   const dispatch = useAppDispatch()
@@ -34,7 +34,7 @@ export const CompaniesPage = () => {
   }, [isSuccess])
 
   return (
-    <Container component="main">
+    <Container component="main" sx={{ marginTop: 8 }}>
       <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Grid container justifyContent="space-between" alignItems="center">
@@ -55,10 +55,16 @@ export const CompaniesPage = () => {
         </Grid>
       </Grid>
 
-      {companies !== null && (
+      {companies !== null ? (
         <DataTable
           tableData={prepareTableData(companies, ["user", "userId"])}
+          routePathOnRowClick={RoutePaths.companyDetail}
+          itemIdKeyName="id"
         />
+      ) : (
+        <Typography component="p" variant="body1" sx={{ margin: "0.5em 0" }}>
+          You dont have companies yet.
+        </Typography>
       )}
     </Container>
   )

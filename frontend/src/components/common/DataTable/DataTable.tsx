@@ -6,7 +6,11 @@ import { type TableDataProperties } from "./types/types"
 import { DataTableHead, DataTableBody } from "./components/components"
 // import styles from "./styles.module.css"
 
-export const DataTable: React.FC<TableDataProperties> = ({ tableData }) => {
+export const DataTable: React.FC<TableDataProperties> = ({
+  tableData,
+  routePathOnRowClick,
+  itemIdKeyName,
+}) => {
   if (!tableData || tableData.length < 1) {
     tableData = [{ emptyTable: "emptyTable" }]
   }
@@ -18,7 +22,11 @@ export const DataTable: React.FC<TableDataProperties> = ({ tableData }) => {
     >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <DataTableHead tableData={tableData} />
-        <DataTableBody tableData={tableData} />
+        <DataTableBody
+          tableData={tableData}
+          routePathOnRowClick={routePathOnRowClick}
+          itemIdKeyName={itemIdKeyName}
+        />
       </Table>
     </TableContainer>
   )
