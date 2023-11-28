@@ -1,0 +1,4 @@
+.head {
+  background-color: var(--global-blue);
+  color: var(--global-white) !important;
+}

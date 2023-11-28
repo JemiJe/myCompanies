@@ -186,7 +186,7 @@ export const ProfilePage = () => {
             </Grid>
             <Grid item>
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="outlined"
                 onClick={returnToCompaniesPage}
