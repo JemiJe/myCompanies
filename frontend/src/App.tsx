@@ -11,7 +11,7 @@ import {
   CompanyListPage,
   CompanyCreatePage,
 } from "./pages/pages"
-import { Header, ProtectedRoute } from "./components/components"
+import { Header, ProtectedRoute, Navbar } from "./components/components"
 import { ToastContainer } from "react-toastify"
 import { useAppDispatch } from "./app/hooks"
 import { getUserFromLocalStorage } from "./helpers/getUserFromLocalStorage"
@@ -29,6 +29,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Header />
+        <Navbar />
         <Routes>
           {/* Public */}
           <Route
