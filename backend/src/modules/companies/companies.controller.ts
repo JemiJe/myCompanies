@@ -15,6 +15,7 @@ import { RolesGuard } from '../auth/roles/roles.guard';
 import { CompaniesService } from './companies.service';
 import { Company as CompanyEntity } from './company.entity';
 import { CompanyDto } from './dto/company.dto';
+import { CompanyUpdateDto } from './dto/companyUpdate.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { RolesEnum } from 'src/core/enums/roles.enum';
 
@@ -60,7 +61,7 @@ export class CompaniesController {
   @Put(':id')
   async update(
     @Param('id') id: number,
-    @Body() company: CompanyDto,
+    @Body() company: CompanyUpdateDto,
     @Request() req,
   ): Promise<CompanyEntity> {
     const { numberOfAffectedRows, updatedCompany } =

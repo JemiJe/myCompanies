@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -10,7 +10,10 @@ import Container from "@mui/material/Container"
 import { LoadingScreen } from "../../components/components"
 import { Navigate } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
-import { useUpdateUserByIdMutation } from "../../services/userApi"
+import {
+  useUpdateCompanyByIdMutation,
+  useGetUserCompaniesMutation,
+} from "../../services/companiesApi"
 import {
   getOnlyChangedFields,
   removeEmptyKeyValues,
@@ -21,7 +24,7 @@ import { toast } from "react-toastify"
 import { useAppDispatch } from "../../app/hooks"
 import { Messages } from "../../enums/enums"
 import { useAppSelector } from "../../app/hooks"
-import { selectCompanies } from "../../features/companiesSlice"
+import { selectCompanies, setCompanies } from "../../features/companiesSlice"
 import { FormattedCompany } from "../../helpers/getCompanyById"
 import style from "./style.module.css"
 
@@ -31,16 +34,24 @@ export const CompanyDetailPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const initialFormValue: FormattedCompany = {
-    ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
-  }
+  // const initialFormValue: FormattedCompany = {
+  //   ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
+  // }
 
+  const [initialFormValue, seIinitialFormValue] = useState({
+    ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
+  })
   const [formValue, setFormValue] = useState(initialFormValue)
   const [changedValues, setChangedValues] = useState({})
-  // const [updateUserById, { data, isSuccess, isLoading }] =
-  //   useUpdateUserByIdMutation()
 
-  // const loadingScreen = useMemo(() => isLoading, [isLoading])
+  const [updateCompanyById, { data, isSuccess, isLoading }] =
+    useUpdateCompanyByIdMutation()
+  const [
+    getUserCompanies,
+    { data: updatedCompaniesData, isSuccess: updatedCompaniesSuccess },
+  ] = useGetUserCompaniesMutation()
+
+  const loadingScreen = useMemo(() => isLoading, [isLoading])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue({
@@ -49,6 +60,7 @@ export const CompanyDetailPage = () => {
     })
   }
 
+  // TODO: disable save button after update
   useEffect(() => {
     const changedFields = getOnlyChangedFields(
       initialFormValue,
@@ -58,26 +70,32 @@ export const CompanyDetailPage = () => {
     changedFields === null
       ? setChangedValues({})
       : setChangedValues(changedFields)
-  }, [formValue])
+  }, [formValue, initialFormValue])
 
   const handleCompanyUpdate = () => {
     if (companies && Object.keys(changedValues).length > 0) {
-      console.dir(changedValues)
-      // updateUserById({
-      //   id: user?.id,
-      //   body: { ...changedValues },
-      // })
+      updateCompanyById({
+        id: companyId,
+        body: { ...changedValues },
+      })
     }
   }
 
   const returnToCompaniesPage = () => navigate(RoutePaths.companies)
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     dispatch(setUser({ user: { ...user, ...data }, token }))
-  //     toast.success(Messages.profileUpdateSuccess)
-  //   }
-  // }, [isSuccess])
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(Messages.companyUpdateSuccess)
+      seIinitialFormValue(data)
+      getUserCompanies({})
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (updatedCompaniesSuccess) {
+      dispatch(setCompanies(updatedCompaniesData))
+    }
+  }, [updatedCompaniesSuccess])
 
   if (companies === null) {
     return <Navigate to={RoutePaths.companies} />
@@ -85,7 +103,7 @@ export const CompanyDetailPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      {/* <LoadingScreen open={loadingScreen} /> */}
+      <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Box
         sx={{
