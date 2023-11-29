@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
@@ -8,47 +8,45 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { LoadingScreen } from "../../components/components"
-import { Navigate } from "react-router-dom"
 import { RoutePaths } from "../../enums/RoutePaths"
 import {
-  useUpdateCompanyByIdMutation,
   useGetUserCompaniesMutation,
-  useDeleteCompanyByIdMutation,
+  useCreateCompanyMutation,
 } from "../../services/companiesApi"
-import {
-  getOnlyChangedFields,
-  removeEmptyKeyValues,
-  getCompanyById,
-} from "../../helpers/helpers"
+import { hasEmptyKeyValue } from "../../helpers/helpers"
 import { toast } from "react-toastify"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppDispatch } from "../../app/hooks"
 import { Messages } from "../../enums/enums"
-import { selectCompanies, setCompanies } from "../../features/companiesSlice"
-import { FormattedCompany } from "../../helpers/getCompanyById"
-import style from "./style.module.css"
+import { setCompanies } from "../../features/companiesSlice"
+import { CompanyCreateReqDto } from "../../dto/dto"
 
-export const CompanyDetailPage = () => {
-  const { companies } = useAppSelector(selectCompanies)
-  const { id: companyId } = useParams()
+const initialFormValue: CompanyCreateReqDto = {
+  name: "",
+  address: "",
+  service_of_activity: "",
+  number_of_employees: "",
+  description: "",
+  type: "",
+}
+
+export const CompanyCreatePage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [initialFormValue, seIinitialFormValue] = useState({
-    ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
-  })
   const [formValue, setFormValue] = useState(initialFormValue)
-  const [changedValues, setChangedValues] = useState({})
 
-  const [updateCompanyById, { data, isSuccess, isLoading }] =
-    useUpdateCompanyByIdMutation()
+  const [createCompany, { isSuccess: createdCompaniesSuccess, isLoading }] =
+    useCreateCompanyMutation()
   const [
     getUserCompanies,
     { data: updatedCompaniesData, isSuccess: updatedCompaniesSuccess },
   ] = useGetUserCompaniesMutation()
-  const [deleteCompanyById, { isSuccess: deletedCompanySuccess }] =
-    useDeleteCompanyByIdMutation()
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
+  const submitIsDisabled = useMemo(
+    () => hasEmptyKeyValue(formValue),
+    [formValue],
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue({
@@ -57,60 +55,30 @@ export const CompanyDetailPage = () => {
     })
   }
 
-  // TODO: disable save button after update
-  useEffect(() => {
-    const changedFields = getOnlyChangedFields(
-      initialFormValue,
-      removeEmptyKeyValues(formValue),
-    )
-
-    changedFields === null
-      ? setChangedValues({})
-      : setChangedValues(changedFields)
-  }, [formValue, initialFormValue])
-
-  const handleCompanyUpdate = () => {
-    if (companies && Object.keys(changedValues).length > 0) {
-      updateCompanyById({
-        id: companyId,
-        body: { ...changedValues },
-      })
+  const handleCompanyCreate = () => {
+    console.dir(formValue)
+    if (!hasEmptyKeyValue(formValue)) {
+      createCompany(formValue)
     }
-  }
-
-  const handleCompanyDelete = () => {
-    deleteCompanyById(companyId)
   }
 
   const returnToCompaniesPage = () => navigate(RoutePaths.companies)
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success(Messages.companyUpdateSuccess)
-      seIinitialFormValue(data)
+    if (createdCompaniesSuccess) {
+      toast.success(Messages.companyCreatedSuccess)
       getUserCompanies({})
     }
-  }, [isSuccess])
-
-  useEffect(() => {
-    if (deletedCompanySuccess) {
-      toast.success(Messages.companyDeleteSuccess)
-      getUserCompanies({})
-    }
-  }, [deletedCompanySuccess])
+  }, [createdCompaniesSuccess])
 
   useEffect(() => {
     if (updatedCompaniesSuccess) {
       dispatch(setCompanies(updatedCompaniesData))
     }
-    if (updatedCompaniesSuccess && deletedCompanySuccess) {
+    if (updatedCompaniesSuccess && createdCompaniesSuccess) {
       returnToCompaniesPage()
     }
   }, [updatedCompaniesSuccess])
-
-  if (companies === null) {
-    return <Navigate to={RoutePaths.companies} />
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -125,11 +93,7 @@ export const CompanyDetailPage = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          <span className={style.highlight}>{initialFormValue.name}</span>
-          {" company details"}
-        </Typography>
-        <Typography component="span" variant="caption">
-          {"updated: " + new Date(initialFormValue.updatedAt).toLocaleString()}
+          Add new company
         </Typography>
 
         <Box sx={{ mt: 3 }}>
@@ -140,6 +104,7 @@ export const CompanyDetailPage = () => {
                 name="name"
                 required
                 fullWidth
+                autoFocus
                 id="name"
                 label="Name"
                 onChange={handleChange}
@@ -224,21 +189,10 @@ export const CompanyDetailPage = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="error"
-                onClick={handleCompanyDelete}
+                onClick={handleCompanyCreate}
+                disabled={submitIsDisabled}
               >
-                Delete
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleCompanyUpdate}
-                disabled={Object.keys(changedValues).length < 1}
-              >
-                Save
+                Add new company
               </Button>
             </Grid>
           </Grid>

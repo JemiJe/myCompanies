@@ -9,6 +9,7 @@ import {
   NotFoundPage,
   UserListPage,
   CompanyListPage,
+  CompanyCreatePage,
 } from "./pages/pages"
 import { Header, ProtectedRoute } from "./components/components"
 import { ToastContainer } from "react-toastify"
@@ -45,6 +46,12 @@ function App() {
             <Route
               path={RoutePaths.companyDetail + "/:id"}
               element={<CompanyDetailPage />}
+            />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path={RoutePaths.companyCreate}
+              element={<CompanyCreatePage />}
             />
           </Route>
           <Route element={<ProtectedRoute />}>

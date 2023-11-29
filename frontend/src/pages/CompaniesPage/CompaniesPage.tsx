@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 import { useGetUserCompaniesMutation } from "../../services/companiesApi"
 import { useAppSelector } from "../../app/hooks"
 import { selectCompanies } from "../../features/companiesSlice"
@@ -16,13 +17,14 @@ import { RoutePaths } from "../../enums/enums"
 
 export const CompaniesPage = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { companies } = useAppSelector(selectCompanies)
   const [getUserCompanies, { data, isSuccess, isLoading }] =
     useGetUserCompaniesMutation()
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
 
-  const addNewCompany = () => {}
+  const addNewCompany = () => navigate(RoutePaths.companyCreate)
 
   useEffect(() => {
     if (!companies && !data) {

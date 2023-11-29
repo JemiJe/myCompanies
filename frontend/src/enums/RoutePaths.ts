@@ -1,9 +1,10 @@
 export enum RoutePaths {
   root = "/",
-  signUp = "/sign_up",
-  signIn = "/sign_in",
+  signUp = "/sign-up",
+  signIn = "/sign-in",
   companies = "/companies",
   companyDetail = "/company-detail",
+  companyCreate = "/company-create",
   profile = "/profile",
   // only for admins
   userList = "/user-list",

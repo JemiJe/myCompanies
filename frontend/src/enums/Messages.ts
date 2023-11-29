@@ -6,4 +6,5 @@ export enum Messages {
   profileUpdateSuccess = "You profile has been updated",
   companyUpdateSuccess = "You company has been updated",
   companyDeleteSuccess = "You company has been deleted",
+  companyCreatedSuccess = "You have added new company",
 }
