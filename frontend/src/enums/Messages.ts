@@ -5,4 +5,5 @@ export enum Messages {
   onlyAdminAccess = "You are not authorized to visit this page",
   profileUpdateSuccess = "You profile has been updated",
   companyUpdateSuccess = "You company has been updated",
+  companyDeleteSuccess = "You company has been deleted",
 }

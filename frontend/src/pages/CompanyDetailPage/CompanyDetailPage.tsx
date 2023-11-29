@@ -13,6 +13,7 @@ import { RoutePaths } from "../../enums/RoutePaths"
 import {
   useUpdateCompanyByIdMutation,
   useGetUserCompaniesMutation,
+  useDeleteCompanyByIdMutation,
 } from "../../services/companiesApi"
 import {
   getOnlyChangedFields,
@@ -27,16 +28,13 @@ import { useAppSelector } from "../../app/hooks"
 import { selectCompanies, setCompanies } from "../../features/companiesSlice"
 import { FormattedCompany } from "../../helpers/getCompanyById"
 import style from "./style.module.css"
+import { useUpdateUserByIdMutation } from "../../services/userApi"
 
 export const CompanyDetailPage = () => {
   const { companies } = useAppSelector(selectCompanies)
   const { id: companyId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
-  // const initialFormValue: FormattedCompany = {
-  //   ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
-  // }
 
   const [initialFormValue, seIinitialFormValue] = useState({
     ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
@@ -50,6 +48,8 @@ export const CompanyDetailPage = () => {
     getUserCompanies,
     { data: updatedCompaniesData, isSuccess: updatedCompaniesSuccess },
   ] = useGetUserCompaniesMutation()
+  const [deleteCompanyById, { isSuccess: deletedCompanySuccess }] =
+    useDeleteCompanyByIdMutation()
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
 
@@ -81,6 +81,10 @@ export const CompanyDetailPage = () => {
     }
   }
 
+  const handleCompanyDelete = () => {
+    deleteCompanyById(companyId)
+  }
+
   const returnToCompaniesPage = () => navigate(RoutePaths.companies)
 
   useEffect(() => {
@@ -92,8 +96,18 @@ export const CompanyDetailPage = () => {
   }, [isSuccess])
 
   useEffect(() => {
+    if (deletedCompanySuccess) {
+      toast.success(Messages.companyDeleteSuccess)
+      getUserCompanies({})
+    }
+  }, [deletedCompanySuccess])
+
+  useEffect(() => {
     if (updatedCompaniesSuccess) {
       dispatch(setCompanies(updatedCompaniesData))
+    }
+    if (updatedCompaniesSuccess && deletedCompanySuccess) {
+      returnToCompaniesPage()
     }
   }, [updatedCompaniesSuccess])
 
@@ -209,6 +223,17 @@ export const CompanyDetailPage = () => {
                 onClick={returnToCompaniesPage}
               >
                 Back to companies
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={handleCompanyDelete}
+              >
+                Delete
               </Button>
             </Grid>
             <Grid item>

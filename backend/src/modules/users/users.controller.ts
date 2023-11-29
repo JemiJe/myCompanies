@@ -82,6 +82,6 @@ export class UsersController {
       throw new NotFoundException("This user doesn't exist");
     }
 
-    return 'Successfully deleted';
+    return deleted;
   }
 }

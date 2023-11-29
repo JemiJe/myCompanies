@@ -83,6 +83,6 @@ export class CompaniesController {
       throw new NotFoundException("This company doesn't exist");
     }
 
-    return 'Successfully deleted';
+    return deleted;
   }
 }
