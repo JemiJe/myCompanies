@@ -6,11 +6,13 @@ import { setupListeners } from "@reduxjs/toolkit/query/react"
 import { errorHandler } from "../middlewares/middlewares"
 import authReducer from "../features/authSlice"
 import companiesReducer from "../features/companiesSlice"
+import usersReducer from "../features/usersSlice"
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     companies: companiesReducer,
+    users: usersReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [companiesApi.reducerPath]: companiesApi.reducer,
