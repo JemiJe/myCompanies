@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { logout } from "../../features/authSlice"
 import { clearCompanies } from "../../features/companiesSlice"
+import { clearUsers } from "../../features/usersSlice"
 import { RoutePaths, Roles } from "../../enums/enums"
 import { selectAuth } from "../../features/authSlice"
 import style from "./style.module.css"
@@ -23,6 +24,7 @@ export const ProfileMenu = () => {
     handleClose()
     dispatch(logout())
     dispatch(clearCompanies())
+    dispatch(clearUsers())
     navigate(RoutePaths.signIn)
   }
 
