@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography"
 import { DataTable } from "../../components/common/common"
 import { prepareTableData } from "../../helpers/helpers"
 import { RoutePaths } from "../../enums/enums"
+import style from "./style.module.css"
 
 export const CompaniesPage = () => {
   const dispatch = useAppDispatch()
@@ -36,7 +37,7 @@ export const CompaniesPage = () => {
   }, [isSuccess])
 
   return (
-    <Container component="main" sx={{ marginTop: 8 }}>
+    <Container component="main" className={style.main}>
       <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Grid container justifyContent="space-between" alignItems="center">

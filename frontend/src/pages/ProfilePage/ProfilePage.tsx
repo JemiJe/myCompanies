@@ -80,12 +80,11 @@ export const ProfilePage = () => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className={style.main}>
       <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
