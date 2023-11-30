@@ -7,7 +7,7 @@
 
 - create your postgreSQL database
 - copy `.env.example` and rename it to .env (`/backend` folder)
-- fill `.env` with your posgressSQL values
+- fill `.env` with your posgressSQL values, project uses `DB_NAME_DEVELOPMENT` as db name and works on development environment
 - then:
 
 ### installation
