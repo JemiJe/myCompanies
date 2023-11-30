@@ -13,6 +13,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { CompaniesService } from './companies.service';
+import { UsersService } from '../users/users.service';
 import { Company as CompanyEntity } from './company.entity';
 import { CompanyDto } from './dto/company.dto';
 import { CompanyUpdateDto } from './dto/companyUpdate.dto';
@@ -21,7 +22,10 @@ import { RolesEnum } from 'src/core/enums/roles.enum';
 
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companyService: CompaniesService) {}
+  constructor(
+    private readonly companyService: CompaniesService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Roles(RolesEnum.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -64,8 +68,10 @@ export class CompaniesController {
     @Body() company: CompanyUpdateDto,
     @Request() req,
   ): Promise<CompanyEntity> {
+    const isAdmin = await this.usersService.isAdmin(req.user.id);
+
     const { numberOfAffectedRows, updatedCompany } =
-      await this.companyService.update(id, company, req.user.id);
+      await this.companyService.update(id, company, req.user.id, isAdmin);
 
     if (numberOfAffectedRows === 0) {
       throw new NotFoundException("This company doesn't exist");
@@ -77,7 +83,8 @@ export class CompaniesController {
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async remove(@Param('id') id: number, @Request() req) {
-    const deleted = await this.companyService.delete(id, req.user.id);
+    const isAdmin = await this.usersService.isAdmin(req.user.id);
+    const deleted = await this.companyService.delete(id, req.user.id, isAdmin);
 
     if (deleted === 0) {
       throw new NotFoundException("This company doesn't exist");

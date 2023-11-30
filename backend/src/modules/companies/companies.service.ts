@@ -33,15 +33,18 @@ export class CompaniesService {
     });
   }
 
-  async delete(id, userId) {
-    return await this.companyRepository.destroy({ where: { id, userId } });
+  async delete(id, userId, isAdmin: boolean = false) {
+    const whereParams = isAdmin ? { id } : { id, userId };
+    return await this.companyRepository.destroy({ where: whereParams });
   }
 
-  async update(id, data, userId) {
+  async update(id, data, userId, isAdmin: boolean = false) {
+    const whereParams = isAdmin ? { id } : { id, userId };
+
     const [numberOfAffectedRows, [updatedCompany]] =
       await this.companyRepository.update(
         { ...data },
-        { where: { id, userId }, returning: true },
+        { where: whereParams, returning: true },
       );
 
     return { numberOfAffectedRows, updatedCompany };

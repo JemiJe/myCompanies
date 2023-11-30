@@ -7,6 +7,7 @@ import {
 import { User } from './user.entity';
 import { UserDto } from './dto/user.dto';
 import { USER_REPOSITORY } from '../../core/constants';
+import { RolesEnum } from 'src/core/enums/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +36,15 @@ export class UsersService {
       where: { id },
       attributes: { exclude: ['password'] },
     });
+  }
+
+  async isAdmin(id: number): Promise<boolean> {
+    return (await this.userRepository.findOne<User>({
+      where: { id, role: RolesEnum.ADMIN },
+      attributes: { exclude: ['password'] },
+    }))
+      ? true
+      : false;
   }
 
   async delete(userId) {
