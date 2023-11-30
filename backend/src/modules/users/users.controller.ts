@@ -55,8 +55,9 @@ export class UsersController {
     @Body() user: UserUpdateDto,
     @Request() req,
   ): Promise<UserEntity> {
-    // TODO: admins can edit user profiles
-    if (req.user.id !== Number(id)) {
+    const isAdmin = await this.usersService.isAdmin(req.user.id);
+
+    if (!isAdmin && req.user.id !== Number(id)) {
       throw new UnauthorizedException('You are not authorized edit this user');
     }
 
