@@ -66,7 +66,7 @@ export const ProfilePage = () => {
     }
   }
 
-  const returnToCompaniesPage = () => navigate(RoutePaths.companies)
+  const returnToPrevPage = () => navigate(-1)
 
   useEffect(() => {
     if (isSuccess) {
@@ -188,9 +188,9 @@ export const ProfilePage = () => {
                 type="button"
                 fullWidth
                 variant="outlined"
-                onClick={returnToCompaniesPage}
+                onClick={returnToPrevPage}
               >
-                Back to companies
+                Back
               </Button>
             </Grid>
             <Grid item>

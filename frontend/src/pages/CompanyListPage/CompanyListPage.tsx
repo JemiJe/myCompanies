@@ -7,12 +7,10 @@ import { useAppDispatch } from "../../app/hooks"
 import { setUsersCompanies } from "../../features/companiesSlice"
 import { LoadingScreen } from "../../components/components"
 import Container from "@mui/material/Container"
-import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import { DataTable } from "../../components/common/common"
-import { prepareTableData } from "../../helpers/helpers"
 import { RoutePaths } from "../../enums/enums"
 import style from "./style.module.css"
 
@@ -24,8 +22,6 @@ export const CompanyListPage = () => {
     useGetAllCompaniesMutation()
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
-
-  const addNewCompany = () => navigate(RoutePaths.companyCreate)
 
   useEffect(() => {
     if (!usersCompanies && !data) {

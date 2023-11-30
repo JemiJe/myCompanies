@@ -109,7 +109,7 @@ export const CompanyDetailPage = () => {
     deleteCompanyById(companyId)
   }
 
-  const returnToCompaniesPage = () => navigate(RoutePaths.companies)
+  const returnToPrevPage = () => navigate(-1)
 
   useEffect(() => {
     if (isSuccess) {
@@ -132,7 +132,7 @@ export const CompanyDetailPage = () => {
       dispatch(setCompanies(updatedCompaniesData))
     }
     if (updatedCompaniesSuccess && deletedCompanySuccess) {
-      returnToCompaniesPage()
+      returnToPrevPage()
     }
   }, [updatedCompaniesSuccess])
 
@@ -142,7 +142,7 @@ export const CompanyDetailPage = () => {
       dispatch(setUsersCompanies(updatedUsersCompaniesData))
     }
     if (updatedUsersCompaniesSuccess && deletedCompanySuccess) {
-      returnToCompaniesPage()
+      returnToPrevPage()
     }
   }, [updatedUsersCompaniesSuccess])
 
@@ -256,9 +256,9 @@ export const CompanyDetailPage = () => {
                 type="button"
                 fullWidth
                 variant="outlined"
-                onClick={returnToCompaniesPage}
+                onClick={returnToPrevPage}
               >
-                Back to companies
+                Back
               </Button>
             </Grid>
             <Grid item>
