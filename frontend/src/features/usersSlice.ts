@@ -9,7 +9,7 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setUsers: (state, action: PayloadAction<UsersAllRespDto>) => {
+    setAllUsers: (state, action: PayloadAction<UsersAllRespDto>) => {
       state.usersAll = action.payload.length > 0 ? [...action.payload] : null
     },
     clearUsers: (state) => {
@@ -19,5 +19,5 @@ export const usersSlice = createSlice({
 })
 
 export const selectUsers = (state: RootState) => state.users
-export const { setUsers, clearUsers } = usersSlice.actions
+export const { setAllUsers, clearUsers } = usersSlice.actions
 export default usersSlice.reducer

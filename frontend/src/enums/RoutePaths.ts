@@ -9,4 +9,5 @@ export enum RoutePaths {
   // only for admins
   userList = "/user-list",
   companyList = "/company-list",
+  userDetail = "/user-detail",
 }

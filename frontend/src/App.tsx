@@ -10,6 +10,7 @@ import {
   UserListPage,
   CompanyListPage,
   CompanyCreatePage,
+  UserDetail,
 } from "./pages/pages"
 import { Header, ProtectedRoute, Navbar } from "./components/components"
 import { ToastContainer } from "react-toastify"
@@ -67,6 +68,12 @@ function App() {
             <Route
               path={RoutePaths.companyList}
               element={<CompanyListPage />}
+            />
+          </Route>
+          <Route element={<ProtectedRoute isAdminProtected={true} />}>
+            <Route
+              path={RoutePaths.userDetail + "/:id"}
+              element={<UserDetail />}
             />
           </Route>
 

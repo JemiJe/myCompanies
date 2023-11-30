@@ -1,7 +1,7 @@
 // dublicated in case if users/all data
 // will be changed regardless of userRespDto
-type User = {
-  id: number | null
+export type UserFromGetAllDto = {
+  id: number | string | null
   first_name: string | null
   last_name: string | null
   nick_name: string | null
@@ -13,4 +13,4 @@ type User = {
   updatedAt: string | null
 }
 
-export type UsersAllRespDto = User[]
+export type UsersAllRespDto = UserFromGetAllDto[]

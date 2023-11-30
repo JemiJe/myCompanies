@@ -8,6 +8,7 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_SERVER_API_BASE_URL,
   }),
   endpoints: (builder) => ({
+    // only for admin roles
     getAllUsers: builder.mutation({
       query: () => {
         return {

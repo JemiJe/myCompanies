@@ -1,0 +1,7 @@
+.main {
+  margin-top: var(--page-content-margin-top);
+}
+
+.avatar {
+  margin-bottom: 0.5em;
+}
