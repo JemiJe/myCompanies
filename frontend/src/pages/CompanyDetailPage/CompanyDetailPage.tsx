@@ -14,6 +14,7 @@ import {
   useUpdateCompanyByIdMutation,
   useGetUserCompaniesMutation,
   useDeleteCompanyByIdMutation,
+  useGetAllCompaniesMutation,
 } from "../../services/companiesApi"
 import {
   getOnlyChangedFields,
@@ -23,19 +24,35 @@ import {
 import { toast } from "react-toastify"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { Messages } from "../../enums/enums"
-import { selectCompanies, setCompanies } from "../../features/companiesSlice"
+import {
+  selectCompanies,
+  setCompanies,
+  setUsersCompanies,
+} from "../../features/companiesSlice"
 import { FormattedCompany } from "../../helpers/getCompanyById"
 import style from "./style.module.css"
 
 export const CompanyDetailPage = () => {
-  const { companies } = useAppSelector(selectCompanies)
+  const { companies, usersCompanies } = useAppSelector(selectCompanies)
   const { id: companyId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [initialFormValue, seIinitialFormValue] = useState({
-    ...(getCompanyById(Number(companyId), companies) as FormattedCompany),
-  })
+  const getCompany = () => {
+    const fromUserCompanies = getCompanyById(
+      Number(companyId),
+      companies,
+    ) as FormattedCompany
+    const fromUsersAllCompanies = getCompanyById(
+      Number(companyId),
+      usersCompanies,
+    ) as FormattedCompany
+    return fromUserCompanies ?? fromUsersAllCompanies
+  }
+
+  const isAnyCompaniesData = getCompany()
+
+  const [initialFormValue, seIinitialFormValue] = useState({ ...getCompany() })
   const [formValue, setFormValue] = useState(initialFormValue)
   const [changedValues, setChangedValues] = useState({})
 
@@ -45,6 +62,13 @@ export const CompanyDetailPage = () => {
     getUserCompanies,
     { data: updatedCompaniesData, isSuccess: updatedCompaniesSuccess },
   ] = useGetUserCompaniesMutation()
+  const [
+    getAllCompanies,
+    {
+      data: updatedUsersCompaniesData,
+      isSuccess: updatedUsersCompaniesSuccess,
+    },
+  ] = useGetAllCompaniesMutation()
   const [deleteCompanyById, { isSuccess: deletedCompanySuccess }] =
     useDeleteCompanyByIdMutation()
 
@@ -70,7 +94,10 @@ export const CompanyDetailPage = () => {
   }, [formValue, initialFormValue])
 
   const handleCompanyUpdate = () => {
-    if (companies && Object.keys(changedValues).length > 0) {
+    if (
+      (companies || usersCompanies) &&
+      Object.keys(changedValues).length > 0
+    ) {
       updateCompanyById({
         id: companyId,
         body: { ...changedValues },
@@ -99,6 +126,7 @@ export const CompanyDetailPage = () => {
     }
   }, [deletedCompanySuccess])
 
+  // update when user redacted
   useEffect(() => {
     if (updatedCompaniesSuccess) {
       dispatch(setCompanies(updatedCompaniesData))
@@ -108,7 +136,17 @@ export const CompanyDetailPage = () => {
     }
   }, [updatedCompaniesSuccess])
 
-  if (companies === null) {
+  // update when admin redacted
+  useEffect(() => {
+    if (updatedUsersCompaniesSuccess) {
+      dispatch(setUsersCompanies(updatedUsersCompaniesData))
+    }
+    if (updatedUsersCompaniesSuccess && deletedCompanySuccess) {
+      returnToCompaniesPage()
+    }
+  }, [updatedUsersCompaniesSuccess])
+
+  if (isAnyCompaniesData === null) {
     return <Navigate to={RoutePaths.companies} />
   }
 
@@ -130,6 +168,11 @@ export const CompanyDetailPage = () => {
         <Typography component="span" variant="caption">
           {"updated: " + new Date(initialFormValue.updatedAt).toLocaleString()}
         </Typography>
+        {usersCompanies && (
+          <Typography component="span" variant="caption">
+            {"user id: " + initialFormValue.userId}
+          </Typography>
+        )}
 
         <Box sx={{ mt: 3 }}>
           <Grid container spacing={2}>

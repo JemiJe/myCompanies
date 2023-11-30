@@ -16,9 +16,7 @@ export class CompaniesService {
   }
 
   async findAll(): Promise<Company[]> {
-    return await this.companyRepository.findAll<Company>({
-      include: [{ model: User, attributes: { exclude: ['password'] } }],
-    });
+    return await this.companyRepository.findAll<Company>();
   }
 
   async findAllByUserId(userId: number): Promise<Company[]> {
