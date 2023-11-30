@@ -116,17 +116,24 @@ export const CompanyDetailPage = () => {
       toast.success(Messages.companyUpdateSuccess)
       seIinitialFormValue(data)
       getUserCompanies({})
+      if (usersCompanies) getAllCompanies({})
     }
   }, [isSuccess])
 
   useEffect(() => {
     if (deletedCompanySuccess) {
       toast.success(Messages.companyDeleteSuccess)
-      getUserCompanies({})
+      // TODO: need to be optimize, check user id with company userId
+      if (usersCompanies) {
+        getAllCompanies({})
+        getUserCompanies({})
+      } else {
+        getUserCompanies({})
+      }
     }
   }, [deletedCompanySuccess])
 
-  // update when user redacted
+  // update when user redacted company
   useEffect(() => {
     if (updatedCompaniesSuccess) {
       dispatch(setCompanies(updatedCompaniesData))
@@ -136,7 +143,7 @@ export const CompanyDetailPage = () => {
     }
   }, [updatedCompaniesSuccess])
 
-  // update when admin redacted
+  // update when admin redacted company
   useEffect(() => {
     if (updatedUsersCompaniesSuccess) {
       dispatch(setUsersCompanies(updatedUsersCompaniesData))

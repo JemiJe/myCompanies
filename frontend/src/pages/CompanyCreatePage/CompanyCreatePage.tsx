@@ -56,7 +56,6 @@ export const CompanyCreatePage = () => {
   }
 
   const handleCompanyCreate = () => {
-    console.dir(formValue)
     if (!hasEmptyKeyValue(formValue)) {
       createCompany(formValue)
     }

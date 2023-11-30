@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CompanyDto {
   @IsNotEmpty()
@@ -11,6 +11,7 @@ export class CompanyDto {
   readonly service_of_activity: string;
 
   @IsNotEmpty()
+  @IsPositive()
   readonly number_of_employees: number;
 
   @IsNotEmpty()
