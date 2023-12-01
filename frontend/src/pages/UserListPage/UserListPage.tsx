@@ -6,6 +6,8 @@ import { selectUsers } from "../../features/usersSlice"
 import { useAppDispatch } from "../../app/hooks"
 import { setAllUsers } from "../../features/usersSlice"
 import { LoadingScreen } from "../../components/components"
+import RefreshIcon from "@mui/icons-material/Refresh"
+import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import CssBaseline from "@mui/material/CssBaseline"
 import Grid from "@mui/material/Grid"
@@ -22,6 +24,8 @@ export const UserListPage = () => {
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
 
+  const updateUsersList = () => getAllUsers({})
+
   useEffect(() => {
     if (!usersAll && !data) {
       getAllUsers({})
@@ -36,10 +40,13 @@ export const UserListPage = () => {
       <LoadingScreen open={loadingScreen} />
       <CssBaseline />
       <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
+        <Grid item display="flex" alignItems="center" gap={1}>
           <Typography component="h1" variant="h5" sx={{ margin: "0.5em 0" }}>
             Users list
           </Typography>
+          <Button type="button" variant="text" onClick={updateUsersList}>
+            <RefreshIcon />
+          </Button>
         </Grid>
       </Grid>
 

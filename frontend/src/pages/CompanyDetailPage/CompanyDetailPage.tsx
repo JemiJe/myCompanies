@@ -20,6 +20,7 @@ import {
   getOnlyChangedFields,
   removeEmptyKeyValues,
   getCompanyById,
+  formatCompanyCreateValues,
 } from "../../helpers/helpers"
 import { toast } from "react-toastify"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
@@ -100,7 +101,7 @@ export const CompanyDetailPage = () => {
     ) {
       updateCompanyById({
         id: companyId,
-        body: { ...changedValues },
+        body: { ...formatCompanyCreateValues(changedValues) },
       })
     }
   }

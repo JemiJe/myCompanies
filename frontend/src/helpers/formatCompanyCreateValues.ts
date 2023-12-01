@@ -1,8 +1,13 @@
-import { CompanyCreateReqDto } from "../dto/companyCreateReqDto"
+import { CompanyCreateReqDto, CompanyUpdateReqDto } from "../dto/dto"
+
 export const formatCompanyCreateValues = (
-  values: CompanyCreateReqDto,
-): CompanyCreateReqDto => {
-  const newValues = { ...values }
-  newValues.number_of_employees = Number(values.number_of_employees)
-  return newValues
+  values: CompanyCreateReqDto | CompanyUpdateReqDto,
+): CompanyCreateReqDto | CompanyUpdateReqDto => {
+  if (values?.number_of_employees) {
+    const newValues = { ...values }
+    const fixedValue = Number(values.number_of_employees)
+    newValues.number_of_employees = fixedValue
+    return newValues
+  }
+  return values
 }
