@@ -13,7 +13,10 @@ import {
   useGetUserCompaniesMutation,
   useCreateCompanyMutation,
 } from "../../services/companiesApi"
-import { hasEmptyKeyValue } from "../../helpers/helpers"
+import {
+  hasEmptyKeyValue,
+  formatCompanyCreateValues,
+} from "../../helpers/helpers"
 import { toast } from "react-toastify"
 import { useAppDispatch } from "../../app/hooks"
 import { Messages } from "../../enums/enums"
@@ -57,7 +60,7 @@ export const CompanyCreatePage = () => {
 
   const handleCompanyCreate = () => {
     if (!hasEmptyKeyValue(formValue)) {
-      createCompany(formValue)
+      createCompany(formatCompanyCreateValues(formValue))
     }
   }
 
