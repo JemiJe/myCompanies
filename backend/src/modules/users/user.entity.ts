@@ -1,4 +1,5 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { RolesEnum } from 'src/core/enums/roles.enum';
 
 @Table
 export class User extends Model<User> {
@@ -23,8 +24,8 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    unique: true,
     allowNull: false,
+    unique: true,
   })
   email: string;
 
@@ -36,9 +37,9 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.ENUM,
-    values: ['admin', 'user'],
+    values: Object.values(RolesEnum),
     allowNull: false,
-    defaultValue: 'user',
+    defaultValue: RolesEnum.USER,
   })
   role: string;
 

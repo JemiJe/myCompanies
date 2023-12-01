@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { UserDto } from '../users/dto/user.dto';
-import { Roles } from 'src/core/enums/enums';
+import { RolesEnum } from 'src/core/enums/enums';
 
 @Injectable()
 export class AuthService {
@@ -36,11 +36,17 @@ export class AuthService {
   public async create(user: UserDto) {
     const passwordHash = await this.hashPassword(user.password);
 
-    const newUser = await this.userService.create({
-      ...user,
-      role: Roles.USER,
-      password: passwordHash,
-    });
+    let newUser;
+
+    try {
+      newUser = await this.userService.create({
+        ...user,
+        role: RolesEnum.USER,
+        password: passwordHash,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error.name);
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = newUser['dataValues'];
@@ -56,7 +62,10 @@ export class AuthService {
   }
 
   private async hashPassword(password) {
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(
+      password,
+      Number(process.env.BCRYPT_SALT_ROUNDS),
+    );
     return hash;
   }
 

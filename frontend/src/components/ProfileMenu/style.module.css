@@ -1,0 +1,4 @@
+.root .badge {
+  font-size: 0.7em;
+  background: var(--admin-badge-color);
+}

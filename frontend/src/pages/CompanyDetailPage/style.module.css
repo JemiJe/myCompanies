@@ -1,0 +1,8 @@
+.main {
+  margin-top: var(--page-content-margin-top);
+}
+
+.highlight {
+  color: var(--global-blue);
+  font-weight: bold;
+}

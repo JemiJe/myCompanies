@@ -1,0 +1,9 @@
+.head {
+  background-color: var(--global-blue);
+  color: var(--global-white) !important;
+  cursor: pointer;
+}
+
+.head:hover {
+  background-color: var(--global-blue-fade);
+}

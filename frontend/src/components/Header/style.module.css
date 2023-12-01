@@ -1,0 +1,20 @@
+.header {
+  height: 65px;
+  padding: 0 var(--page-layout-header-side-padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--global-blue);
+}
+
+.logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 210px;
+}
+
+.logoImg {
+  color: var(--global-white);
+  font-size: 1.5em;
+}

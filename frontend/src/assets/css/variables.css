@@ -1,0 +1,15 @@
+:root {
+  --global-blue: #1976d2;
+  --global-blue-fade: #1665b5;
+  --global-white: #ffffff;
+  --active-lime-color: #19d21d;
+
+  --global-hover-blue: #1976d215;
+
+  --admin-badge-color: #19d21d;
+
+  --page-layout-header-margin-top: 1em;
+  --page-layout-header-side-padding: 2em;
+
+  --page-content-margin-top: 1em;
+}
