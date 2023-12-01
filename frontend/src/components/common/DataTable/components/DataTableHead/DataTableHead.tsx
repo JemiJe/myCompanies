@@ -1,13 +1,18 @@
-import React from "react"
+import React, { useState } from "react"
 import TableCell from "@mui/material/TableCell"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import { type TableDataProperties } from "../../types/types"
+import { type TableDataProperties, type SortType } from "../../types/types"
 import { DATA_KEYS_TO_HIDE } from "../../constants/constants"
 import { prepareTableData } from "../../../../../helpers/helpers"
 import styles from "./style.module.css"
 
-export const DataTableHead: React.FC<TableDataProperties> = ({ tableData }) => {
+// TODO: ability to pass formated head names and with woking sort
+export const DataTableHead: React.FC<TableDataProperties> = ({
+  tableData,
+  sortFunc,
+}) => {
+  const [sortMode, setSortMode] = useState("asc" as SortType)
   const formatedTableData = () => {
     return prepareTableData(tableData, DATA_KEYS_TO_HIDE)
   }
@@ -18,7 +23,17 @@ export const DataTableHead: React.FC<TableDataProperties> = ({ tableData }) => {
     <TableHead>
       <TableRow>
         {headNames.map((name, index) => (
-          <TableCell classes={styles} key={name} align="center">
+          <TableCell
+            classes={styles}
+            key={name}
+            onClick={() => {
+              if (sortFunc) {
+                setSortMode(sortMode === "asc" ? "desc" : "asc")
+                sortFunc(name, sortMode, formatedTableData())
+              }
+            }}
+            align="center"
+          >
             {name}
           </TableCell>
         ))}

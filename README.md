@@ -40,6 +40,7 @@ npm run dev
 
 - users can sign in/up to app, create/change/delete companies, and update their own profles (including passwords)
 - admins can do everything that users can, plus update/delete others profiles, update/delete others companies, see all users and companies in separate tables (admins have additional screen users and users companies)
+- tables can be sorted by any value in table head
 - to protect admin routes is used protected route, additionally any action to update/delete/get data is verified on server side
 
 ## stack
