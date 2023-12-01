@@ -59,3 +59,7 @@ npm run dev
 - state managment: Redux toolkit, Redux RTK Query (for API)
 - UI: Material UI
 - Other: react router dom, toastify
+
+## screens
+
+<a href="https://imgur.com/vUt7w7A"><img src="https://i.imgur.com/vUt7w7A.png" title="source: imgur.com" /></a>

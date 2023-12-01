@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { RolesEnum } from 'src/core/enums/roles.enum';
+import { Company } from '../companies/company.entity';
 
 @Table
 export class User extends Model<User> {
@@ -54,4 +55,7 @@ export class User extends Model<User> {
     allowNull: false,
   })
   description: string;
+
+  @HasMany(() => Company, { onDelete: 'CASCADE' })
+  companies: Company[];
 }
