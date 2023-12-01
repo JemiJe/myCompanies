@@ -132,6 +132,14 @@ export const UserDetail = () => {
           {initialFormValue.first_name + " Profile"}
         </Typography>
         <Typography component="span" variant="caption">
+          {`created: ${new Date(
+            user?.createdAt as string,
+          ).toLocaleDateString()}`}
+          {` updated: ${new Date(
+            user?.updatedAt as string,
+          ).toLocaleDateString()}`}
+        </Typography>
+        <Typography component="span" variant="caption">
           {`user id: ${userId}`}
         </Typography>
         <Box sx={{ mt: 3 }}>
