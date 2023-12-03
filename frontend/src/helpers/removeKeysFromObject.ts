@@ -1,4 +1,4 @@
-type MyObject = { [key: string]: any }
+export type MyObject = { [key: string]: any }
 
 export const removeKeysFromObject = (
   obj: MyObject,

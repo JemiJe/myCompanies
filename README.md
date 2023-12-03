@@ -5,6 +5,7 @@
 
 ## deploy
 
+response from server can take up to minute for first visit, or after long pause of visiting
 deploy is available: [https://astonishing-narwhal-087f62.netlify.app/](https://astonishing-narwhal-087f62.netlify.app/)
 
 ## setting up backend

@@ -14,6 +14,7 @@ export const DataTable: React.FC<TableDataProperties> = ({
   tableData,
   routePathOnRowClick,
   itemIdKeyName,
+  idsToHighlight,
 }) => {
   if (!tableData || tableData.length < 1) {
     tableData = [{ emptyTable: "emptyTable" }]
@@ -53,6 +54,7 @@ export const DataTable: React.FC<TableDataProperties> = ({
           tableData={sortedTableData}
           routePathOnRowClick={routePathOnRowClick}
           itemIdKeyName={itemIdKeyName}
+          idsToHighlight={idsToHighlight}
         />
       </Table>
     </TableContainer>

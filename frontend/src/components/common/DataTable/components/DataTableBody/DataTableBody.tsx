@@ -4,14 +4,15 @@ import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
 import { type TableDataItem, type TableDataProperties } from "../../types/types"
 import { DATA_KEYS_TO_HIDE } from "../../constants/constants"
-import { prepareTableData } from "../../../../../helpers/helpers"
+import { prepareTableData, type MyObject } from "../../../../../helpers/helpers"
 import { useNavigate } from "react-router-dom"
 import styles from "./styles.module.css"
 
 export const DataTableBody: React.FC<TableDataProperties> = ({
   tableData,
   routePathOnRowClick,
-  itemIdKeyName,
+  itemIdKeyName = "id",
+  idsToHighlight,
 }) => {
   const navigate = useNavigate()
   const getItemFirstKey = (item: TableDataItem) => {
@@ -31,11 +32,20 @@ export const DataTableBody: React.FC<TableDataProperties> = ({
     if (routePathOnRowClick) navigate(routePathOnRowClick + `/${id}`)
   }
 
+  const applyRowClass = (row: MyObject): string => {
+    if (!idsToHighlight) return ""
+    const isStyled = idsToHighlight?.find(
+      ({ id, idKeyName }) => id === row[idKeyName],
+    )
+    if (isStyled && isStyled.id) return ` ${isStyled.styleClassName}`
+    return ""
+  }
+
   return (
     <TableBody>
       {formatedTableData().map((row, tableDataIndex) => (
         <TableRow
-          className={styles.row}
+          className={styles.row + applyRowClass(row)}
           key={getItemFirstKey(row) + "" + tableDataIndex}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >

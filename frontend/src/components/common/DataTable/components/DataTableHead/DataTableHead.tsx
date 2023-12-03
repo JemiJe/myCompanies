@@ -29,7 +29,7 @@ export const DataTableHead: React.FC<TableDataProperties> = ({
             onClick={() => {
               if (sortFunc) {
                 setSortMode(sortMode === "asc" ? "desc" : "asc")
-                sortFunc(name, sortMode, formatedTableData())
+                sortFunc(name, sortMode, [...tableData])
               }
             }}
             align="center"
