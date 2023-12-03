@@ -3,6 +3,11 @@
   <h2 align="center" style="margin-top: -3px">Manage your companies</h2>
 </div>
 
+## deploy
+
+response from server can take up to minute for first visit, or after long pause of visiting
+deploy is available: [https://astonishing-narwhal-087f62.netlify.app/](https://astonishing-narwhal-087f62.netlify.app/)
+
 ## setting up backend
 
 - create your postgreSQL database

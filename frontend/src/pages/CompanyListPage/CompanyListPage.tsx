@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from "react"
 import { useGetAllCompaniesMutation } from "../../services/companiesApi"
-import { useAppSelector } from "../../app/hooks"
+import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectCompanies } from "../../features/companiesSlice"
-import { useAppDispatch } from "../../app/hooks"
 import { setUsersCompanies } from "../../features/companiesSlice"
 import { LoadingScreen } from "../../components/components"
 import RefreshIcon from "@mui/icons-material/Refresh"
@@ -13,13 +12,19 @@ import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import { DataTable } from "../../components/common/common"
 import { RoutePaths } from "../../enums/enums"
+import { getUserFromLocalStorage } from "../../helpers/helpers"
 import style from "./style.module.css"
 
 export const CompanyListPage = () => {
+  const { user } = getUserFromLocalStorage()
   const dispatch = useAppDispatch()
   let { usersCompanies } = useAppSelector(selectCompanies)
   const [getAllCompanies, { data, isSuccess, isLoading }] =
     useGetAllCompaniesMutation()
+
+  const highlightedMyOwnRow = [
+    { id: user?.id, idKeyName: "userId", styleClassName: style.myRow },
+  ]
 
   const loadingScreen = useMemo(() => isLoading, [isLoading])
 
@@ -56,6 +61,7 @@ export const CompanyListPage = () => {
           tableData={usersCompanies}
           routePathOnRowClick={RoutePaths.companyDetail}
           itemIdKeyName="id"
+          idsToHighlight={highlightedMyOwnRow}
         />
       ) : (
         <Typography component="p" variant="body1" sx={{ margin: "0.5em 0" }}>
