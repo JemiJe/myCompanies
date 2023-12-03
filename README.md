@@ -3,6 +3,10 @@
   <h2 align="center" style="margin-top: -3px">Manage your companies</h2>
 </div>
 
+## deploy
+
+deploy is available: [https://astonishing-narwhal-087f62.netlify.app/](https://astonishing-narwhal-087f62.netlify.app/)
+
 ## setting up backend
 
 - create your postgreSQL database
